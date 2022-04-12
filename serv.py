@@ -1,11 +1,9 @@
 try:
     from os import system
-    """system("pip install subprocess")
-    system("pip install easyocr")
+    system("pip install subprocess")
     system("pip install sockets")
-    system("pip install opencv-python")
     system("pip install pypi-stat")
-    system("pip install comtypes")"""
+    system("pip install comtypes")
     # Добавляем необходимые подклассы - MIME-типы
     import subprocess
     import os.path
