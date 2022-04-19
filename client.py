@@ -94,7 +94,6 @@ def wa1ting(ip="192.168.0.12", s=None, it=0):
         return [ip, s]
 
 
-
 """
 This module implements the main functionality of vidstream.
 
@@ -441,7 +440,7 @@ class CameraClient(StreamingClient):
         start_stream : starts the camera stream in a new thread
     """
 
-    def __init__(self, host, port, x_res=1024, y_res=576):
+    def __init__(self, host, port, x_res=1280, y_res=720):
         """
         Creates a new instance of CameraClient.
 
