@@ -1,0 +1,8 @@
+pynput
+keyboard
+pyautogui
+sockets
+comtypes
+pywifi
+requests
+win32api
