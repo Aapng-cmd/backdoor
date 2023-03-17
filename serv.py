@@ -31,7 +31,7 @@ def waiting(s, client):
 def ch_dir(dir):
     command = "ch_dir " + dir
     client.send(command.encode("cp866"))
-    subprocess.getoutput("dir")
+    # subprocess.getoutput("dir")
 
 
 def py_to_exe(filename):
@@ -360,8 +360,6 @@ def mouse(client=None):
             if y != pyautogui.position()[1]:
                 x, y = pyautogui.position()
                 client.send(str(str(x) + " " + str(y)).encode("cp65001"))"""
-
-
 
 
 
