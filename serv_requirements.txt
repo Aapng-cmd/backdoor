@@ -1,0 +1,5 @@
+easyocr
+sockets
+opencv-python
+pypi-stat
+comtypes
